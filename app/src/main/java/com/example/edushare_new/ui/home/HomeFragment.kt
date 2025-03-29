@@ -42,8 +42,9 @@ class HomeFragment : Fragment() {
             postsAdapter.submitList(posts)
         }
 
-        binding.btnAddPost.setOnClickListener {
+        binding.fabAddPost.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCreatePostFragment())
         }
+
     }
 }

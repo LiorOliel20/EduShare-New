@@ -47,6 +47,11 @@
     </fragment>
 
     <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.edushare_new.ui.home.SearchFragment"
+        android:label="Search" />
+
+    <fragment
         android:id="@+id/createPostFragment"
         android:name="com.example.edushare_new.ui.post.CreatePostFragment"
         android:label="Create Post" />
@@ -77,7 +82,12 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.edushare_new.ui.profile.ProfileFragment"
-        android:label="Profile" />
+        android:label="Profile">
+
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/inspirationFragment"
         android:name="com.example.edushare_new.ui.inspiration.InspirationFragment"
