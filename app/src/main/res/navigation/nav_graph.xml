@@ -72,6 +72,23 @@
             android:name="postId"
             app:argType="integer"
             android:defaultValue="-1" />
+        <!-- Action to navigate to EditPostFragment -->
+        <action
+            android:id="@+id/action_postDetailFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment">
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="com.example.edushare_new.ui.post.EditPostFragment"
+        android:label="Edit Post">
+        <argument
+            android:name="postId"
+            app:argType="integer" />
     </fragment>
 
     <fragment
@@ -100,4 +117,5 @@
         android:id="@+id/inspirationFragment"
         android:name="com.example.edushare_new.ui.inspiration.InspirationFragment"
         android:label="Daily Inspiration" />
+
 </navigation>
