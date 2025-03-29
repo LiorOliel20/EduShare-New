@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -41,9 +42,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        // הוספת מאזין ללחיצה על תמונת הפרופיל לצורך עדכון
         binding.ivProfile.setOnClickListener {
-            // פתיחת Intent לבחירת תמונה מהגלריה
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, IMAGE_PICK_CODE_PROFILE)
@@ -64,10 +63,14 @@ class ProfileFragment : Fragment() {
         if (requestCode == IMAGE_PICK_CODE_PROFILE && resultCode == Activity.RESULT_OK) {
             val selectedImageUri = data?.data
             selectedImageUri?.let {
-                // עדכון התמונה במסך
                 binding.ivProfile.setImageURI(it)
-                // קריאה לעדכון התמונה במודל (ייתכן וצריך להוסיף טיפול בשרת/ Firebase)
-                viewModel.updatePhotoUrl(it.toString())
+                viewModel.updatePhotoUrl(it.toString()) { success, message ->
+                    if (success) {
+                        Toast.makeText(requireContext(), "Profile picture updated successfully", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Failed to update profile picture: $message", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -82,11 +85,18 @@ class ProfileFragment : Fragment() {
             .setPositiveButton("Save") { _, _ ->
                 val name = editText.text.toString().trim()
                 if (name.isNotEmpty()) {
-                    viewModel.updateDisplayName(name)
+                    viewModel.updateDisplayName(name) { success, message ->
+                        if (success) {
+                            Toast.makeText(requireContext(), "Display name updated", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(requireContext(), "Failed to update display name: $message", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
+
 }
 

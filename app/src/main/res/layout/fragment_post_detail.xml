@@ -42,7 +42,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp"/>
 
-
         <Button
             android:id="@+id/btnDownloadPDF"
             android:layout_width="wrap_content"
@@ -51,7 +50,8 @@
             app:layout_constraintTop_toBottomOf="@id/ivPostImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

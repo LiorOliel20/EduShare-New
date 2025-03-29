@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.edushare_new.R
 import com.example.edushare_new.databinding.FragmentMyPostsBinding
 import com.example.edushare_new.ui.home.PostsAdapter
 import com.example.edushare_new.viewmodel.PostViewModel
@@ -29,9 +31,8 @@ class MyPostsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // אתחול ה-Adapter עם מאזין ללחיצה על פריט (למעבר למסך פרטי הפוסט)
+        // Initialize the adapter with a click listener for navigating to post details
         postsAdapter = PostsAdapter { postId ->
-            // שימוש ב-SafeArgs להעברת מזהה הפוסט למסך הפרטים
             val action = MyPostsFragmentDirections.actionMyPostsFragmentToPostDetailFragment(postId)
             findNavController().navigate(action)
         }
@@ -40,18 +41,16 @@ class MyPostsFragment : Fragment() {
             adapter = postsAdapter
         }
 
-        // אתחול ViewModel
         postViewModel = ViewModelProvider(this)[PostViewModel::class.java]
 
-        // קבלת מזהה המשתמש הנוכחי באמצעות FirebaseAuth
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         if (currentUserId != null) {
-            // צפייה ב-LiveData שמחזיר את הפוסטים של המשתמש
             postViewModel.getPostsByUser(currentUserId).observe(viewLifecycleOwner) { posts ->
                 postsAdapter.submitList(posts)
             }
         } else {
-            // במידה והמשתמש אינו מחובר – ניתן להציג הודעה מתאימה או ניווט למסך ההתחברות
+            Toast.makeText(requireContext(), "User not logged in. Please log in.", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.loginFragment)
         }
     }
 }
