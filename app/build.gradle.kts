@@ -2,6 +2,16 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("kapt")
+    id("androidx.navigation.safeargs")
+    id("com.google.gms.google-services")
+
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains:annotations:23.0.0")
+    }
 }
 
 android {
@@ -27,6 +37,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -36,11 +47,12 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 
 dependencies {
-
+    // Core & UI
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -49,6 +61,42 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Room - חלקים שונים
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    kapt("androidx.room:room-compiler:2.6.1")
+    // יש לוודא שגרסת Room האחרונה נכללת ב-version catalog (לדוגמה: libs.androidx.room.ktx.v250)
+
+    // Firebase Authentication
+    implementation(libs.firebase.auth.ktx.v2211)
+    implementation(platform(libs.firebase.bom))
+
+    // Picasso
+    implementation(libs.picasso)
+
+    // Retrofit & Gson
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // Navigation Component
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
+    // Lifecycle & LiveData
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Additional AndroidX & UI
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.constraintlayout)
+
+    // Kotlin StdLib
+    implementation(libs.kotlin.stdlib)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -57,3 +105,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+
+
